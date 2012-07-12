@@ -12,7 +12,7 @@ Some optimisation were implemented, e.g. memory pooling of tree nodes and recycl
 
 # Usage example
 
-```````
+```````C
 #include "kd3/kdtree.h"
 
 void some_function(void) {
@@ -27,25 +27,27 @@ void some_function(void) {
 
     /* for each iteration */
     while(continue) {
-      /* build tree based on current positions */
-      kdtree_build(x, y, z, SIZE, &tree); /* tree obj recycled */
+    
+        /* build tree based on current positions */
+        kdtree_build(x, y, z, SIZE, &tree); /* tree obj recycled */
       
-      /* for each point */
-      for (i = 0; i < SIZE; i++) {
+        /* for each point */
+        for (i = 0; i < SIZE; i++) {
 
-        /* search for neighbours */
-        kdtree_search(tree, &results, SEARCH_RADIUS); /* result obj recycled */
+            /* search for neighbours */
+            kdtree_search(tree, &results, SEARCH_RADIUS); /* result obj recycled */
 
-        /* kdtree_iterator_sort(result); // if you need results in order */
+            /* kdtree_iterator_sort(result); // if you need results in order */
 
-        /* loop through each neighbour */
-        j = kdtee_iterator_get_next(result);
-        while (j != KDTREE_END) {
-/* go stuff with point i and neighbour j ... */
+            /* loop through each neighbour */
+            j = kdtee_iterator_get_next(result);
+            while (j != KDTREE_END) {
+                /* do stuff with point i and neighbour j ... */
 
-           j = kdtee_iterator_get_next(result); /* get next */
+                j = kdtee_iterator_get_next(result); /* get next */
+            }
         }
-
+        
         /* move points around ... */
     }
 
