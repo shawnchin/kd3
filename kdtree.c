@@ -79,7 +79,7 @@ inline static struct tree_node* _next_node(kdtree *tree);
 inline static struct tree_node* _get_leaf_node(kdtree *tree, size_t offset);
 inline static struct tree_node* _get_branch_node(kdtree *tree, double split);
 static struct tree_node* _build_kdtree(size_t idx_from, size_t idx_to,
-									   size_t depth, kdtree *tree);
+                                       size_t depth, kdtree *tree);
 inline static kdtree_iterator* _iterator_new(void);
 inline static void _iterator_reset(kdtree_iterator *iter);
 inline static void _iterator_push(kdtree_iterator *iter, size_t value);
@@ -88,9 +88,9 @@ inline static void _explore_branch(kdtree *tree,
                                    size_t depth,
                                    const struct space *search_space,
                                    const struct space *domain,
-								                   kdtree_iterator *iter);
+                                   kdtree_iterator *iter);
 static void _search_kdtree(kdtree *tree,
-						               struct tree_node *root,
+                           struct tree_node *root,
                            size_t depth,
                            const struct space *search_space,
                            const struct space *domain,
