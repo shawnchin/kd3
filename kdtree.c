@@ -84,23 +84,23 @@ inline static kdtree_iterator* _iterator_new(void);
 inline static void _iterator_reset(kdtree_iterator *iter);
 inline static void _iterator_push(kdtree_iterator *iter, size_t value);
 inline static void _explore_branch(kdtree *tree,
-								   struct tree_node *node,
-								   size_t depth,
-								   const struct space *search_space,
-								   const struct space *domain,
-								   kdtree_iterator *iter);
+                                   struct tree_node *node,
+                                   size_t depth,
+                                   const struct space *search_space,
+                                   const struct space *domain,
+								                   kdtree_iterator *iter);
 static void _search_kdtree(kdtree *tree,
-						   struct tree_node *root,
-						   size_t depth,
-						   const struct space *search_space,
-						   const struct space *domain,
-						   kdtree_iterator *iter);
+						               struct tree_node *root,
+                           size_t depth,
+                           const struct space *search_space,
+                           const struct space *domain,
+                           kdtree_iterator *iter);
 inline static int _point_in_search_space(const struct data_point *point,
-										 const struct space *search_space);
+                                         const struct space *search_space);
 inline static int _completely_enclosed(const struct space *search_space,
-									   const struct space *domain);
+                                       const struct space *domain);
 inline static int _search_area_intersects(const struct space *search_space,
-										  const struct space *domain);
+                                          const struct space *domain);
 #ifndef _DEBUG_MODE
 inline static int _is_leaf_node(const struct tree_node *node);
 #else
@@ -180,7 +180,7 @@ void kdtree_build(double *x, double *y, double *z, size_t count, kdtree **tree_p
  * to each side of the cube.
  */
 void kdtree_search(kdtree *tree, kdtree_iterator **iter_ptr,
-					double x, double y, double z, double apothem) {
+                   double x, double y, double z, double apothem) {
 	kdtree_iterator *iter = *iter_ptr;
 	struct space search_space;
 	struct space domain;
@@ -293,7 +293,7 @@ inline static int _is_leaf_node(const struct tree_node *node) {
 
 /* returns true if point is within search space */
 inline static int _point_in_search_space(const struct data_point *point,
-									     const struct space *search_space) {
+                                         const struct space *search_space) {
 	return ((point->x <= search_space->dim[DIM_X].max) &&
 	        (point->x >= search_space->dim[DIM_X].min) &&
 
@@ -306,7 +306,7 @@ inline static int _point_in_search_space(const struct data_point *point,
 
 /* returns true if domain is completely enclosed within search space */
 inline static int _completely_enclosed(const struct space *search_space,
-									   const struct space *domain) {
+                                       const struct space *domain) {
 	return ((domain->dim[DIM_X].min <= search_space->dim[DIM_X].max) &&
 	        (domain->dim[DIM_X].min >= search_space->dim[DIM_X].min) &&
 	        (domain->dim[DIM_X].max <= search_space->dim[DIM_X].max) &&
@@ -330,58 +330,58 @@ inline static int _completely_enclosed(const struct space *search_space,
  * we do just that and negate the return value.
  */
 inline static int _search_area_intersects(const struct space *search_space,
-										  const struct space *domain) {
+                                          const struct space *domain) {
 	return !((search_space->dim[DIM_X].min > domain->dim[DIM_X].max) ||
-             (search_space->dim[DIM_X].max < domain->dim[DIM_X].min) ||
+           (search_space->dim[DIM_X].max < domain->dim[DIM_X].min) ||
 
-             (search_space->dim[DIM_Y].min > domain->dim[DIM_Y].max) ||
-             (search_space->dim[DIM_Y].max < domain->dim[DIM_Y].min) ||
+           (search_space->dim[DIM_Y].min > domain->dim[DIM_Y].max) ||
+           (search_space->dim[DIM_Y].max < domain->dim[DIM_Y].min) ||
 
-             (search_space->dim[DIM_Z].min > domain->dim[DIM_Z].max) ||
-             (search_space->dim[DIM_Z].max < domain->dim[DIM_Z].min));
+           (search_space->dim[DIM_Z].min > domain->dim[DIM_Z].max) ||
+           (search_space->dim[DIM_Z].max < domain->dim[DIM_Z].min));
 }
 
 /* add all leaf nodes under a branch to the iterator */
-static void _report_all_leaves(const kdtree *tree,
-							   const struct tree_node *node,
-							   kdtree_iterator *iter) {
-	if (_is_leaf_node(node)) {
-		_iterator_push(iter, tree->points[node->idx].idx);
-	} else {
-		_report_all_leaves(tree, node->left, iter);
-		_report_all_leaves(tree, node->right, iter);
-	}
-}
+  static void _report_all_leaves(const kdtree *tree,
+                   const struct tree_node *node,
+                   kdtree_iterator *iter) {
+    if (_is_leaf_node(node)) {
+      _iterator_push(iter, tree->points[node->idx].idx);
+    } else {
+      _report_all_leaves(tree, node->left, iter);
+      _report_all_leaves(tree, node->right, iter);
+    }
+  }
 
 /* convenience function to explore a sub-domain */
 inline static void _explore_branch(kdtree *tree,
-								   struct tree_node *node,
-								   size_t depth,
-								   const struct space *search_space,
-								   const struct space *domain,
-								   kdtree_iterator *iter) {
-	if (_is_leaf_node(node)) {
-		if (_point_in_search_space(tree->points + node->idx, search_space)) {
-			_iterator_push(iter, tree->points[node->idx].idx);
-		}
-	} else if (_search_area_intersects(search_space, domain)) {
-		if (_completely_enclosed(search_space, domain)) {
-			_report_all_leaves(tree, node, iter);
-	    } else {
-	        _search_kdtree(tree, node, depth + 1, search_space, domain, iter);
-	    }
-	}
+                                   struct tree_node *node,
+                                   size_t depth,
+                                   const struct space *search_space,
+                                   const struct space *domain,
+                                   kdtree_iterator *iter) {
+  if (_is_leaf_node(node)) {
+    if (_point_in_search_space(tree->points + node->idx, search_space)) {
+      _iterator_push(iter, tree->points[node->idx].idx);
+    }
+  } else if (_search_area_intersects(search_space, domain)) {
+    if (_completely_enclosed(search_space, domain)) {
+      _report_all_leaves(tree, node, iter);
+    } else {
+      _search_kdtree(tree, node, depth + 1, search_space, domain, iter);
+    }
+  }
 }
 
 /* Recursively search the tree for points within a search space.
  * Results are appended to the iterator object.
  */
 static void _search_kdtree(kdtree *tree,
-						   struct tree_node *root,
-						   size_t depth,
-						   const struct space *search_space,
-						   const struct space *domain,
-						   kdtree_iterator *iter) {
+                           struct tree_node *root,
+                           size_t depth,
+                           const struct space *search_space,
+                           const struct space *domain,
+                           kdtree_iterator *iter) {
 	const size_t axis = depth % NDIMS;
 	struct space new_domain;
 
@@ -400,7 +400,7 @@ static void _search_kdtree(kdtree *tree,
 
 /* internal routine to recursively build the kdtree */
 static struct tree_node* _build_kdtree(size_t idx_from, size_t idx_to,
-									   size_t depth, kdtree *tree) {
+                                       size_t depth, kdtree *tree) {
 	double split;
 	struct tree_node *node;
 	struct data_point *point;

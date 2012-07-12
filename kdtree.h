@@ -68,7 +68,7 @@ typedef struct {
 void kdtree_build(double *x, double *y, double *z, size_t count, kdtree **tree);
 void kdtree_delete(kdtree **tree_ptr);
 void kdtree_search(kdtree *tree, kdtree_iterator **iter_ptr,
-					double x, double y, double z, double apothem);
+                   double x, double y, double z, double apothem);
 size_t kdtree_iterator_get_next(kdtree_iterator *iter);
 void kdtree_iterator_rewind(kdtree_iterator *iter);
 void kdtree_iterator_sort(kdtree_iterator *iter);
