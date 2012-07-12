@@ -18,51 +18,49 @@
 
 /* control value to indicate the end of iteration */
 #ifndef SIZE_MAX
-    #define KDTREE_END ((size_t)-1)
+  #define KDTREE_END ((size_t)-1)
 #else
-    #define KDTREE_END SIZE_MAX
+  #define KDTREE_END SIZE_MAX
 #endif
 
 struct data_point {
-	double x;
-	double y;
-	double z;
-	size_t idx; /* index of original data point */
+  double x;
+  double y;
+  double z;
+  size_t idx; /* index of original data point */
 };
 
 struct tree_node {
-	struct tree_node *left;
-	struct tree_node *right;
-	double split;
-	size_t idx;
+  struct tree_node *left;
+  struct tree_node *right;
+  double split;
+  size_t idx;
 };
 
 struct boundaries {
-	double min;
-	double max;
+  double min;
+  double max;
 };
 
 struct space {
-	struct boundaries dim[3];
+  struct boundaries dim[3];
 };
 
 
 typedef struct {
-	size_t count;
-	size_t max_nodes;
-	size_t next_node;
-	struct data_point *points;
-	struct tree_node *node_data;
-
-	struct tree_node *root;
-
+  size_t count;
+  size_t max_nodes;
+  size_t next_node;
+  struct data_point *points;
+  struct tree_node *node_data;
+  struct tree_node *root;
 } kdtree;
 
 typedef struct {
-	size_t *data;
-	size_t capacity;
-	size_t size;
-	size_t current;
+  size_t *data;
+  size_t capacity;
+  size_t size;
+  size_t current;
 } kdtree_iterator;
 
 void kdtree_build(double *x, double *y, double *z, size_t count, kdtree **tree);

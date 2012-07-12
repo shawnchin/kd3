@@ -14,47 +14,57 @@ Some optimisation were implemented, e.g. memory pooling of tree nodes and recycl
 
 ```````C
 #include "kd3/kdtree.h"
+#define SEARCH_RADIUS 10
+#define SEARCH_RADIUS_SQUARED 100
 
 void some_function(void) {
-
-    double *x, *y, *z; /* array of points */
-    size_t i, j; /* loop indices */
-
-    x = malloc(sizeof(double) * SIZE);
-    y = malloc(sizeof(double) * SIZE);
-    z = malloc(sizeof(double) * SIZE);
-    /* initialise values ..... */
-
-    /* for each iteration */
-    while(continue) {
     
-        /* build tree based on current positions */
-        kdtree_build(x, y, z, SIZE, &tree); /* tree obj recycled */
+  double distance_squared, distance;
+  double *x, *y, *z; /* array of points */
+  size_t i, j; /* loop indices */
+
+  x = malloc(sizeof(double) * SIZE);
+  y = malloc(sizeof(double) * SIZE);
+  z = malloc(sizeof(double) * SIZE);
+  /* initialise values ..... */
+
+  /* for each iteration */
+  while(continue) {
+    
+    /* build tree based on current positions */
+    kdtree_build(x, y, z, SIZE, &tree); /* tree obj recycled */
       
-        /* for each point */
-        for (i = 0; i < SIZE; i++) {
+    /* for each point */
+    for (i = 0; i < SIZE; i++) {
 
-            /* search for neighbours */
-            kdtree_search(tree, &results, SEARCH_RADIUS); /* result obj recycled */
+      /* search for neighbours */
+      kdtree_search(tree, &results, SEARCH_RADIUS); /* result obj recycled */
+      /* kdtree_iterator_sort(result); // if you need results in order */
 
-            /* kdtree_iterator_sort(result); // if you need results in order */
-
-            /* loop through each neighbour */
-            j = kdtee_iterator_get_next(result);
-            while (j != KDTREE_END) {
-                /* do stuff with point i and neighbour j ... */
-
-                j = kdtee_iterator_get_next(result); /* get next */
-            }
+      /* loop through each neighbour */
+      j = kdtee_iterator_get_next(result);
+      while (j != KDTREE_END) {
+                
+        /* second filter to ignore points beyond absolute distance */
+        distance_squared = (x[i]-x[j])*(x[i]-x[j]) + 
+                           (y[i]-y[j])*(y[i]-y[j]) + 
+                           (z[i]-z[j])*(z[i]-z[j]);
+        if (( i!= j) && (distance_squared <= SEARCH_RADIUS_SQUARED)) {
+          distance = sqrt(distance_squared);
+          /* do stuff with point i and neighbour j ... */
         }
         
-        /* move points around ... */
+        j = kdtee_iterator_get_next(result); /* get next */
+      }
     }
+        
+    /* move points around ... */
+  }
 
-    /* clean at the end */
-    kdtree_delete(&tree);
-    kdtree_iterator_delete(&result);
-    free(x); free(y); free(z);
+  /* clean at the end */
+  kdtree_delete(&tree);
+  kdtree_iterator_delete(&result);
+  free(x); free(y); free(z);
 }
 ``````
 
