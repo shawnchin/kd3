@@ -67,8 +67,11 @@ void kdtree_build(double *x, double *y, double *z, size_t count, kdtree **tree);
 void kdtree_delete(kdtree **tree_ptr);
 void kdtree_search(kdtree *tree, kdtree_iterator **iter_ptr,
                    double x, double y, double z, double apothem);
+void kdtree_search_space(kdtree *tree, kdtree_iterator **iter_ptr,
+                         double x_min, double x_max,
+                         double y_min, double y_max,
+                         double z_min, double z_max);
 size_t kdtree_iterator_get_next(kdtree_iterator *iter);
 void kdtree_iterator_rewind(kdtree_iterator *iter);
 void kdtree_iterator_sort(kdtree_iterator *iter);
 void kdtree_iterator_delete(kdtree_iterator **iter_ptr);
-

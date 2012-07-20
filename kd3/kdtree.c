@@ -181,13 +181,27 @@ void kdtree_build(double *x, double *y, double *z, size_t count, kdtree **tree_p
  */
 void kdtree_search(kdtree *tree, kdtree_iterator **iter_ptr,
                    double x, double y, double z, double apothem) {
+  assert(apothem >= 0.0);
+  kdtree_search_space(tree, iter_ptr, 
+                      x - apothem, x + apothem,
+                      y - apothem, y + apothem,
+                      z - apothem, z + apothem);
+}
+
+/* search tree for points that fall within the 3d box defined by
+ * x_min, x_max, y_min, y_max, z_min, z_max.
+ */
+void kdtree_search_space(kdtree *tree, kdtree_iterator **iter_ptr,
+                         double x_min, double x_max,
+                         double y_min, double y_max,
+                         double z_min, double z_max) {
   kdtree_iterator *iter = *iter_ptr;
   struct space search_space;
   struct space domain;
 
   /* sanity checks */
   assert(tree != NULL);
-  assert(apothem >= 0.0);
+  
   /* The tree should have at least one point */
   assert(tree->root != NULL);
   assert(!_is_leaf_node(tree->root));
@@ -200,12 +214,12 @@ void kdtree_search(kdtree *tree, kdtree_iterator **iter_ptr,
   }
 
   /* define the search space */
-  search_space.dim[DIM_X].min = x - apothem;
-  search_space.dim[DIM_X].max = x + apothem;
-  search_space.dim[DIM_Y].min = y - apothem;
-  search_space.dim[DIM_Y].max = y + apothem;
-  search_space.dim[DIM_Z].min = z - apothem;
-  search_space.dim[DIM_Z].max = z + apothem;
+  search_space.dim[DIM_X].min = x_min;
+  search_space.dim[DIM_X].max = x_max;
+  search_space.dim[DIM_Y].min = y_min;
+  search_space.dim[DIM_Y].max = y_max;
+  search_space.dim[DIM_Z].min = z_min;
+  search_space.dim[DIM_Z].max = z_max;
 
   /* set initial domain to infinite space */
   domain.dim[DIM_X].min = -DBL_MAX;
@@ -218,7 +232,6 @@ void kdtree_search(kdtree *tree, kdtree_iterator **iter_ptr,
   /* search tree */
   _search_kdtree(tree, tree->root, 0, &search_space, &domain, iter);
 }
-
 
 /* Deallocates a tree object referenced by tree_ptr and sets the ptr to NULL */
 void kdtree_delete(kdtree **tree_ptr) {
