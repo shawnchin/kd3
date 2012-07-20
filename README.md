@@ -81,6 +81,6 @@ void some_function(void) {
 
 Note that the search space for `kdtree_search()` is cube-shaped rather spherical. The last argument specifies the perpendicular distance between the center point and each face of the cube.
 
-For a more generic search, you can also use `kdtree_search_space()` which searches within the space (3D box) defined by specifying the min and max values for each dimension.
-
 We leave the final filtering of points (discarding points that are beyond the search radius) to users as this involves calculating the absolute distance between points. Most use cases require the distance value within the inner loop anyway so it makes more sense to leave the calculation within the user code.
+
+For a more generic search, you can also use `kdtree_search_space()` which searches within the space (3D box) defined by specifying the min and max values for each dimension.
