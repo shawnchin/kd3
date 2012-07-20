@@ -85,6 +85,11 @@ int main(void) {
   const size_t e4[] = { 0, 1, 2, 7, 8, 9, 10 };
   validate(iter, 7, e4);
   
+  /* using generic box search to search exactly top slice */
+  kdtree_search_space(tree, &iter, 0.0, 1.0, 0.5, 1.0, 0.0, 1.0);
+  const size_t e5[] = { 0, 1, 2, 5, 6, 9, 10 };
+  validate(iter, 7, e5);
+  
   printf("\n ---- ALL TESTS PASSED ---- \n");
   /* clean up */
   kdtree_iterator_delete(&iter);
