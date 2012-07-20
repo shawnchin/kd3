@@ -1,5 +1,5 @@
-SOURCES   = run_test.c kdtree.c 
-HEADERS   = kdtree.h
+SOURCES   = run_test.c kd3/kdtree.c 
+HEADERS   = kd3/kdtree.h
 
 GCC_CFLAGS_LVL1 = -Wall -pedantic 
 GCC_CFLAGS_LVL2 = -Wextra -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith 

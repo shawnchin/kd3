@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
-#include "kdtree.h"
+#include "kd3/kdtree.h"
 
 double *x, *y, *z;
 
