@@ -18,7 +18,9 @@ Some optimisation were implemented, e.g. memory pooling of tree nodes and recycl
 #define SEARCH_RADIUS_SQUARED 100
 
 void some_function(void) {
-    
+  kdtree *tree = NULL;
+  kdtree_iterator *result = NULL;
+  
   double distance_squared, distance;
   double *x, *y, *z; /* array of points */
   size_t i, j; /* loop indices */
@@ -38,7 +40,7 @@ void some_function(void) {
     for (i = 0; i < SIZE; i++) {
 
       /* search for neighbours */
-      kdtree_search(tree, &results, x[i], y[i], z[i], SEARCH_RADIUS); /* result obj recycled */
+      kdtree_search(tree, &result, x[i], y[i], z[i], SEARCH_RADIUS); /* result obj recycled */
       /* kdtree_iterator_sort(result); // if you need results in order */
 
       /* loop through each neighbour */
