@@ -1,3 +1,5 @@
+# Makefile to build test code.
+
 SOURCES   = run_test.c kd3/kdtree.c 
 HEADERS   = kd3/kdtree.h
 
