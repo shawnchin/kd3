@@ -8,7 +8,7 @@
  * \endcode
  *
  * \brief Implementation of a balanced 3D k-d tree to speed up selection
- * of points by interaction radius.
+ * of neighbouring points that are within a specific distance.
  *
  * This was not designed as a generic k-d tree solution. The APIs
  * and functionality was written based on the requirements of an
@@ -112,11 +112,11 @@ inline static int _is_leaf_node(const struct tree_node *node);
 /* Build a 3D k-d tree based on the points stored in x, y, z arrays (with count
  * specifying the number of points).
  *
- * To optimise for use case where the data points may move and we need to rebuild
+ * To optimise for cases where the data points may move and we need to rebuild
  * the tree for said points, we take in a reference to the kdtree object pointer
  * instead of simply returning the address of a new object.
  *
- * This allows the used to specify a NULL pointer when creating an new tree object,
+ * This allows the user to specify a NULL pointer when creating an new tree object,
  * or reuse the memory of the previously created object when rebuilding the tree
  * during the next iteration.
  *
