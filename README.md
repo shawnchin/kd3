@@ -79,7 +79,7 @@ void some_function(void) {
   kdtree_iterator_delete(&result);
   free(x); free(y); free(z);
 }
-``````
+```````
 
 Note that the search space for `kdtree_search()` is cube-shaped rather spherical. The last argument specifies the perpendicular distance between the center point and each face of the cube.
 
